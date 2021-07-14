@@ -22,13 +22,11 @@ pub fn start_server() {
 #[pyfunction]
 pub fn async_static_files(py: Python, file_name: String) -> PyResult<PyObject> {
     pyo3_asyncio::tokio::into_coroutine(py, async move {
-        let contents = fs::read(file_name.clone()).await.unwrap();
+        let contents = fs::read(file_name).await.unwrap();
         let foo = String::from_utf8_lossy(&contents);
         Ok(Python::with_gil(|py| {
-            let x = PyString::new(py, &foo);
-            let any: &PyAny = x.as_ref();
-            let any = any.to_object(py);
-            any.clone()
+            let x: Py<PyAny> = PyString::new(py, &foo).into();
+            x
         }))
     })
 }

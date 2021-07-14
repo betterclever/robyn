@@ -1,6 +1,14 @@
 from .robyn import Server, async_static_files
 from .responses import static_file, jsonify
 
+import aiofiles
+
+async def async_static_files_python(filename):
+    async with aiofiles.open(filename, mode='r') as f:
+        contents = await f.read()
+    return contents
+
+
 class Robyn:
     """This is the python wrapper for the Robyn binaries.
     """
