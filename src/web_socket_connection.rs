@@ -117,9 +117,9 @@ use std::sync::Arc;
 pub async fn start_web_socket(
     req: HttpRequest,
     stream: web::Payload,
-    router: HashMap<String, (PyFunction, u8)>,
+    router: &HashMap<String, (PyFunction, u8)>
 ) -> Result<HttpResponse, Error> {
-    let resp = ws::start(MyWs { router }, &req, stream);
+    let resp = ws::start(MyWs { router: router.clone() }, &req, stream);
     println!("{:?}", resp);
     resp
 }
